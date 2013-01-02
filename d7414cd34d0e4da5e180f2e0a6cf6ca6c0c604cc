@@ -1,0 +1,8 @@
+Change-Id: Id7414cd34d0e4da5e180f2e0a6cf6ca6c0c604cc
+Code-Review+2: Pavel Kirpichyov <pavel.kirpichyov@gmail.com>
+Verified+1: Pavel Kirpichyov <pavel.kirpichyov@gmail.com>
+Submitted-by: Pavel Kirpichyov <pavel.kirpichyov@gmail.com>
+Submitted-at: Wed, 02 Jan 2013 16:58:05 +0100
+Reviewed-on: http://server.cas-online.nl:8181/338
+Project: androidarmv6/android_device_samsung_msm7x27-common
+Branch: refs/heads/cm-10.1

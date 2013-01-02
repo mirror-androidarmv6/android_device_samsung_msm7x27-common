@@ -215,6 +215,15 @@ static void wrap_data_callback(int32_t msg_type, const sp<IMemory>& dataPtr, voi
 
     priv_camera_device_t* dev = (priv_camera_device_t*) user;
 
+#ifdef SAMSUNG_CAMERA_HACK
+    if (msg_type == CAMERA_MSG_RAW_IMAGE)
+    {
+        qCamera->disableMsgType(CAMERA_MSG_RAW_IMAGE);
+        qCamera->disableMsgType(CAMERA_MSG_SHUTTER);
+        return;
+    }
+#endif
+
     if(msg_type == CAMERA_MSG_PREVIEW_FRAME)
     {
 		android::CameraParameters hwParameters = qCamera->getParameters();
@@ -334,6 +343,13 @@ void camera_enable_msg_type(struct camera_device * device, int32_t msg_type)
 void camera_disable_msg_type(struct camera_device * device, int32_t msg_type)
 {
     qCamera->disableMsgType(msg_type);
+
+#ifdef SAMSUNG_CAMERA_HACK
+    if (msg_type == CAMERA_MSG_SHUTTER) {
+        ALOGI("%s---", __FUNCTION__);
+        return;
+    }
+#endif
 }
 
 int camera_msg_type_enabled(struct camera_device * device, int32_t msg_type)

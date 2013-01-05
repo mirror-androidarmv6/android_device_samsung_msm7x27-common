@@ -134,6 +134,15 @@ struct mbadrc_filter {
     struct adrc_ext_buf  ext_buf;
 };
 
+struct extamp_filter_type {
+    int extampFMH;
+    int	extampNoMicH;
+    int	extampOtherH;
+    int	extampS;
+    bool extampOn;
+    bool filterInited;
+};
+
 enum tty_modes {
     TTY_OFF = 0,
     TTY_VCO = 1,

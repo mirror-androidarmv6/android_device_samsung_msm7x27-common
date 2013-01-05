@@ -310,6 +310,13 @@ private:
 
             bool        mBuiltinMicSelected;
 
+            // extamp
+            int		extampFMH;
+            int		extampNoMicH;
+            int		extampOtherH;
+            int		extampS;
+            bool	extampOn;
+
      friend class AudioStreamInMSM72xx;
             android::Mutex       mLock;
 };

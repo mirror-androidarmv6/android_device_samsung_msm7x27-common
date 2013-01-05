@@ -15,6 +15,7 @@
 ** limitations under the License.
 */
 
+#include <cutils/properties.h>
 #include <math.h>
 
 //#define LOG_NDEBUG 0
@@ -1158,6 +1159,43 @@ static status_t do_route_audio_rpc(uint32_t device,
      *                        # recording.
      *  )
      */
+
+    // Samsung EXTAMP (external amplifier) filter
+
+    char extampFMH[PROPERTY_VALUE_MAX];
+    char extampNoMicH[PROPERTY_VALUE_MAX];
+    char extampOtherH[PROPERTY_VALUE_MAX];
+    char extampS[PROPERTY_VALUE_MAX];
+    property_get("persist.sys.extamp-fmheadset", extampFMH, "20");
+    property_get("persist.sys.extamp-nomicheadset", extampNoMicH, "26");
+    property_get("persist.sys.extamp-otherheadset", extampOtherH, "18");
+    property_get("persist.sys.extamp-speaker", extampS, "29");
+
+    struct msm_snd_extamp_config args2;
+    args2.device=device;
+    if (device == SND_DEVICE_HEADSET || device == SND_DEVICE_FM_HEADSET || device == SND_DEVICE_NO_MIC_HEADSET) {
+        args2.speaker_volume=0;
+        if (device == SND_DEVICE_NO_MIC_HEADSET) {
+            args2.headset_volume=atoi(extampNoMicH);
+        } else if (device == SND_DEVICE_FM_HEADSET) {
+            args2.headset_volume=atoi(extampFMH);
+        } else {
+            args2.headset_volume=atoi(extampOtherH);
+        }
+    }
+    else {
+        args2.speaker_volume=atoi(extampS);
+        args2.headset_volume=0;
+    }
+    char extampOn[PROPERTY_VALUE_MAX];
+    property_get("persist.sys.extamp-filter", extampOn, "0");
+    if (strcmp(extampOn, "1") == 0) {
+        if (ioctl(m7xsnddriverfd, SND_SET_EXTAMP, &args2) < 0) {
+            ALOGE("snd_set_extamp error.");
+            return -EIO;
+        }
+    }
+
     struct msm_snd_device_config args;
     args.device = device;
     args.ear_mute = ear_mute ? SND_MUTE_MUTED : SND_MUTE_UNMUTED;

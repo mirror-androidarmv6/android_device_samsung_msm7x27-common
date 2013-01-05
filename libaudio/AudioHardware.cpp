@@ -15,6 +15,7 @@
 ** limitations under the License.
 */
 
+#include <cutils/properties.h>
 #include <math.h>
 
 //#define LOG_NDEBUG 0
@@ -106,11 +107,29 @@ static uint32_t SND_DEVICE_NO_MIC_HEADSET=-1;
 
 AudioHardware::AudioHardware() :
     mInit(false), mMicMute(true), mBluetoothNrec(true), mBluetoothId(0),
-    mOutput(0), mSndEndpoints(NULL), mCurSndDevice(-1), mDualMicEnabled(false), mBuiltinMicSelected(false)
+    mOutput(0), mSndEndpoints(NULL), mCurSndDevice(-1), mDualMicEnabled(false), mBuiltinMicSelected(false),
+    extampFMH(20), extampNoMicH(26), extampOtherH(18), extampS(29), extampOn(false)
 {
-   if (get_audpp_filter() == 0) {
-           audpp_filter_inited = true;
-   }
+    if (get_audpp_filter() == 0) {
+	audpp_filter_inited = true;
+
+	// Samsung EXTAMP (external amplifier) filter
+	char extampTmp[PROPERTY_VALUE_MAX];
+	property_get("persist.sys.extamp-fmheadset", extampTmp, "20");
+	extampFMH = atoi(extampTmp);
+
+	property_get("persist.sys.extamp-nomicheadset", extampTmp, "26");
+	extampNoMicH = atoi(extampTmp);
+
+	property_get("persist.sys.extamp-otherheadset", extampTmp, "18");
+	extampOtherH = atoi(extampTmp);
+
+	property_get("persist.sys.extamp-speaker", extampTmp, "29");
+	extampS = atoi(extampTmp);
+
+	property_get("persist.sys.extamp-filter", extampTmp, "0");
+	extampOn = (0 != atoi(extampTmp));
+    }
 
     m7xsnddriverfd = open("/dev/msm_snd", O_RDWR);
     if (m7xsnddriverfd >= 0) {
@@ -1158,6 +1177,31 @@ static status_t do_route_audio_rpc(uint32_t device,
      *                        # recording.
      *  )
      */
+
+    if (extampOn) {
+        struct msm_snd_extamp_config args2;
+        args2.device=device;
+        if (device == SND_DEVICE_HEADSET || device == SND_DEVICE_FM_HEADSET || device == SND_DEVICE_NO_MIC_HEADSET) {
+            args2.speaker_volume = 0;
+            if (device == SND_DEVICE_NO_MIC_HEADSET) {
+                args2.headset_volume = extampNoMicH;
+            } else if (device == SND_DEVICE_FM_HEADSET) {
+                args2.headset_volume = extampFMH;
+            } else {
+                args2.headset_volume = extampOtherH;
+            }
+        }
+        else {
+            args2.speaker_volume = extampS;
+            args2.headset_volume = 0;
+        }
+
+        if (ioctl(m7xsnddriverfd, SND_SET_EXTAMP, &args2) < 0) {
+            ALOGE("snd_set_extamp error.");
+            return -EIO;
+        }
+    }
+
     struct msm_snd_device_config args;
     args.device = device;
     args.ear_mute = ear_mute ? SND_MUTE_MUTED : SND_MUTE_UNMUTED;

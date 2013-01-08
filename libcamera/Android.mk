@@ -8,6 +8,10 @@ LOCAL_MODULE           := camera.$(TARGET_BOARD_PLATFORM)
 
 LOCAL_MODULE_TAGS      := optional
 
+ifeq ($(CAMERA_FC_HACK), true)
+LOCAL_CFLAGS           += -DCAMERA_FC_HACK
+endif
+
 LOCAL_SRC_FILES        := cameraHAL.cpp
 LOCAL_C_INCLUDES       := $(TOP)/frameworks/base/include
 LOCAL_C_INCLUDES       += hardware/qcom/display-legacy/libgralloc

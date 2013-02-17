@@ -93,6 +93,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.use_dithering=0
 
+## Loop ringtone
+PRODUCT_PROPERTY_OVERRIDES += \
+    media.ringtone.force_repeat=1
+
 # Other
 PRODUCT_LOCALES += en ru_RU
 PRODUCT_AAPT_CONFIG := ldpi mdpi normal

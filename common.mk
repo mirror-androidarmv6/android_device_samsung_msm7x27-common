@@ -15,6 +15,13 @@
 # Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
+## Ramdisk
+PRODUCT_COPY_FILES += \
+    device/samsung/msm7x27-common/ramdisk/init.msm7x27.rc:root/init.msm7x27.rc \
+    device/samsung/msm7x27-common/ramdisk/init.msm7x27.usb.rc:root/init.msm7x27.usb.rc \
+    device/samsung/msm7x27-common/ramdisk/ueventd.msm7x27.rc:root/ueventd.msm7x27.rc
+
+
 ## Audio
 PRODUCT_PACKAGES += \
     audio_policy.msm7x27 \

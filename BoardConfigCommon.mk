@@ -20,15 +20,33 @@
 # Use the Qualcomm common folder
 include device/qcom/msm7x27/BoardConfigCommon.mk
 
+# Kernel 3.0 - supported devices
+ifneq ($(filter galaxy5,$(CM_BUILD)),)
+	BUILD_WITH_30X_KERNEL := true
+endif
+
+# ath6kl-compat driver - supported devices
+ifneq ($(filter galaxy5,$(CM_BUILD)),)
+	BOARD_WLAN_DEVICE := ath6kl_compat
+endif
+
 ## Kernel
 BOARD_KERNEL_BASE := 0x13600000
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_KERNEL_SOURCE := kernel/samsung/msm7x27
+ifdef BUILD_WITH_30X_KERNEL
+	TARGET_KERNEL_SOURCE := kernel/samsung/msm
+else
+	TARGET_KERNEL_SOURCE := kernel/samsung/msm7x27
+endif
 TARGET_PROVIDES_INIT_TARGET_RC := true
 
 ## Platform
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
-TARGET_SPECIFIC_HEADER_PATH := device/samsung/msm7x27-common/include
+ifdef BUILD_WITH_30X_KERNEL
+	TARGET_SPECIFIC_HEADER_PATH := device/samsung/msm7x27-common/include-30x
+else
+	TARGET_SPECIFIC_HEADER_PATH := device/samsung/msm7x27-common/include
+endif
 
 ## Webkit
 ENABLE_WEBGL := true
@@ -63,21 +81,55 @@ BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO -DQCOM_FM_ENABLED
 BOARD_FM_DEVICE := bcm2049
 
 ## Wi-Fi
-COMMON_GLOBAL_CFLAGS += -DWIFI_AP_HAS_OWN_DRIVER
-BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-WPA_SUPPLICANT_VERSION := VER_0_8_X
-BOARD_WLAN_DEVICE := ath6kl
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
 BOARD_WLAN_NO_FWRELOAD := true
-WIFI_AP_DRIVER_MODULE_ARG := "ifname=athap0 fwmode=2"
-WIFI_AP_DRIVER_MODULE_PATH := /system/wifi/ar6000.ko
-WIFI_AP_DRIVER_MODULE_NAME := ar6000
+COMMON_GLOBAL_CFLAGS += -DWIFI_AP_HAS_OWN_DRIVER
 WIFI_AP_FIRMWARE_LOADER := ""
+WPA_SUPPLICANT_VERSION := VER_0_8_X
 
-WIFI_DRIVER_MODULE_ARG := "ifname=wlan0 fwmode=1"
-WIFI_DRIVER_MODULE_PATH := /system/wifi/ar6000.ko
-WIFI_DRIVER_MODULE_NAME := ar6000
-BOARD_HAVE_SAMSUNG_WIFI := true
+ifeq ($(BOARD_WLAN_DEVICE),ath6kl_compat)
+	# This is unnecessary, and breaks WIFI_EXT_MODULE_*
+	BOARD_HAVE_SAMSUNG_WIFI := false
+
+	# ATH6KL uses NL80211 driver
+	BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+	BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl_compat
+
+	# ATH6KL uses hostapd built from source
+	BOARD_HOSTAPD_DRIVER := NL80211
+	BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_ath6kl_compat
+
+	# Common module dependency
+	WIFI_EXT_MODULE_NAME := cfg80211
+	WIFI_EXT_MODULE_PATH := /system/lib/modules/cfg80211.ko
+
+	# AP mode
+	WIFI_AP_DRIVER_MODULE_ARG := "suspend_mode=3 wow_mode=2 ath6kl_p2p=1 recovery_enable=1 samsung_firmware=0"
+	WIFI_AP_DRIVER_MODULE_NAME := ath6kl
+	WIFI_AP_DRIVER_MODULE_PATH := /system/lib/modules/ath6kl.ko
+
+	# Station/client mode
+	WIFI_DRIVER_MODULE_ARG := "suspend_mode=3 wow_mode=2 ath6kl_p2p=1 recovery_enable=1 samsung_firmware=1"
+	WIFI_DRIVER_MODULE_NAME := ath6kl
+	WIFI_DRIVER_MODULE_PATH := /system/lib/modules/ath6kl.ko
+else
+	# Enhance Samsung AR6000 compatibility
+	BOARD_HAVE_SAMSUNG_WIFI := true
+
+	# AR6000 SDK 3.x uses WEXT driver
+	BOARD_WLAN_DEVICE := ath6kl
+	BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+	BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
+
+	# AP mode
+	WIFI_AP_DRIVER_MODULE_ARG := "ifname=athap0 fwmode=2"
+	WIFI_AP_DRIVER_MODULE_PATH := /system/wifi/ar6000.ko
+	WIFI_AP_DRIVER_MODULE_NAME := ar6000
+
+	# Station/client mode
+	WIFI_DRIVER_MODULE_ARG := "ifname=wlan0 fwmode=1"
+	WIFI_DRIVER_MODULE_PATH := /system/wifi/ar6000.ko
+	WIFI_DRIVER_MODULE_NAME := ar6000
+endif
 
 ## Wi-Fi Hotspot
 BOARD_HAVE_LEGACY_HOSTAPD := true

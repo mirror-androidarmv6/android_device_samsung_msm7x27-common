@@ -107,6 +107,7 @@ ifeq ($(BOARD_WLAN_DEVICE),ath6kl_compat)
 
 	# Build the ath6kl-compat modules
 KERNEL_EXTERNAL_MODULES:
+	make -C hardware/atheros/ath6kl-compat KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-" clean
 	make -C hardware/atheros/ath6kl-compat KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
 	$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-objcopy --strip-unneeded hardware/atheros/ath6kl-compat/compat/compat.ko
 	$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-objcopy --strip-unneeded hardware/atheros/ath6kl-compat/drivers/net/wireless/ath/ath6kl/ath6kl.ko

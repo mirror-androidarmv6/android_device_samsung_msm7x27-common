@@ -30,7 +30,7 @@ import com.android.internal.telephony.cdma.CdmaInformationRecords;
 import com.android.internal.telephony.cdma.CdmaInformationRecords.CdmaSignalInfoRec;
 import com.android.internal.telephony.cdma.SignalToneUtil;
 
-import android.util.Log;
+import android.telephony.Rlog;
 
 public class SamsungMSMRIL extends RIL implements CommandsInterface {
 

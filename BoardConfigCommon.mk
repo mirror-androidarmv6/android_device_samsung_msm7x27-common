@@ -22,7 +22,7 @@
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_HAVE_BLUETOOTH_BLUEZ := true
 BOARD_HAVE_SAMSUNG_BLUETOOTH := true
-#BOARD_BLUEDROID_VENDOR_CONF := device/samsung/msm7x27-common/bluetooth/vnd_samsung.txt
+BOARD_BLUEDROID_VENDOR_CONF := device/samsung/msm7x27-common/bluetooth/vnd_samsung.txt
 
 # Use the Qualcomm common folder
 include device/qcom/msm7x27/BoardConfigCommon.mk

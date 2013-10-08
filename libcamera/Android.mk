@@ -8,6 +8,9 @@ LOCAL_MODULE           := camera.$(TARGET_BOARD_PLATFORM)
 
 LOCAL_MODULE_TAGS      := optional
 
+ifeq ($(BOARD_CAMERA_SHUTTER_HACK), true)
+LOCAL_CFLAGS     += -DCAMERA_SHUTTER_HACK
+endif
 
 LOCAL_SRC_FILES        := cameraHAL.cpp
 LOCAL_C_INCLUDES       := $(TOP)/frameworks/base/include

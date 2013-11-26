@@ -101,10 +101,6 @@ ifeq ($(BOARD_WLAN_DEVICE),ath6kl_compat)
 	BOARD_HOSTAPD_DRIVER := NL80211
 	BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_ath6kl_compat
 
-	# Common module dependency
-	WIFI_EXT_MODULE_NAME := cfg80211
-	WIFI_EXT_MODULE_PATH := /system/lib/modules/cfg80211.ko
-
 	# AP mode
 	WIFI_AP_DRIVER_MODULE_ARG := "suspend_mode=3 wow_mode=2 ath6kl_p2p=1 recovery_enable=1 samsung_firmware=0"
 	WIFI_AP_DRIVER_MODULE_NAME := ath6kl

@@ -20,6 +20,9 @@
 # Use the Qualcomm common folder
 include device/qcom/msm7x27/BoardConfigCommon.mk
 
+## Use modified releasetools ota script that implements squisher support
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/msm7x27-common/releasetools/ota_from_target_files
+
 ## Bluetooth
 ## Note: BOARD_HAVE_BLUETOOTH_BLUEZ is defined in
 ## device/samsung/msm7x27-common/common.mk due to inheritance issues.

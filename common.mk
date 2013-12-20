@@ -81,8 +81,8 @@ PRODUCT_PACKAGES += \
     libfmradio.bcm2049
 
 ## FM Radio permissions
-PRODUCT_COPY_FILES += \
-    frameworks/base/data/etc/com.stericsson.hardware.fm.receiver.xml:system/etc/permissions/com.stericsson.hardware.fm.receiver.xml
+#PRODUCT_COPY_FILES += \
+#    frameworks/base/data/etc/com.stericsson.hardware.fm.receiver.xml:system/etc/permissions/com.stericsson.hardware.fm.receiver.xml
 
 ## Camera
 PRODUCT_PACKAGES += \

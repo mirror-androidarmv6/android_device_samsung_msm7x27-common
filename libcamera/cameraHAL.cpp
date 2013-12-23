@@ -219,7 +219,6 @@ void CameraHAL_FixupParams(android::CameraParameters &camParams) {
     const char *preferred_size         = "640x480";
 #else
     const char *preferred_size         = "320x240";
-#endif
     const char *preview_frame_rates    = "25,24,15";
 
     camParams.set(CameraParameters::KEY_VIDEO_FRAME_FORMAT, CameraParameters::PIXEL_FORMAT_YUV420SP);
@@ -330,7 +329,9 @@ void camera_enable_msg_type(struct camera_device * device, int32_t msg_type) {
 void camera_disable_msg_type(struct camera_device * device, int32_t msg_type) {
     /* The camera app disables the shutter too early which leads to crash.
      * Leaving it enabled. */
+#ifndef CAMERA_SHUTTER_HACK
     if (msg_type == CAMERA_MSG_SHUTTER) return;
+#endif
 
     qCamera->disableMsgType(msg_type);
 }

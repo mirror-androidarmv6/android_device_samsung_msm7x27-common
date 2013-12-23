@@ -12,6 +12,10 @@ ifneq (,$(filter beni cooper,$(CM_BUILD)))
     LOCAL_CFLAGS       += -DBOARD_CAMERA_5MP
 endif
 
+ifeq ($(BOARD_CAMERA_SHUTTER_HACK), true)
+LOCAL_CFLAGS     += -DCAMERA_SHUTTER_HACK
+endif
+
 LOCAL_SRC_FILES        := cameraHAL.cpp
 LOCAL_C_INCLUDES       := $(TOP)/frameworks/base/include
 LOCAL_C_INCLUDES       += hardware/qcom/display-legacy/libgralloc

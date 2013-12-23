@@ -330,7 +330,9 @@ void camera_enable_msg_type(struct camera_device * device, int32_t msg_type) {
 void camera_disable_msg_type(struct camera_device * device, int32_t msg_type) {
     /* The camera app disables the shutter too early which leads to crash.
      * Leaving it enabled. */
+#ifndef CAMERA_SHUTTER_HACK
     if (msg_type == CAMERA_MSG_SHUTTER) return;
+#endif
 
     qCamera->disableMsgType(msg_type);
 }

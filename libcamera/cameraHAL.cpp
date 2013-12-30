@@ -22,7 +22,7 @@
 #define LOG_TAG "CameraHAL"
 
 #define GRALLOC_USAGE_PMEM_PRIVATE_ADSP GRALLOC_USAGE_PRIVATE_0
-
+git fetch http://review.androidarmv6.org/androidarmv6/android_device_samsung_msm7x27-common refs/changes/26/6326/2 && git cherry-pick FETCH_HEAD
 #include <camera/CameraParameters.h>
 #include <hardware/camera.h>
 #include <binder/IMemory.h>
@@ -240,6 +240,30 @@ void CameraHAL_FixupParams(android::CameraParameters &camParams) {
          camParams.set(CameraParameters::KEY_VIDEO_SIZE, preferred_size);
     }
     camParams.set("orientation", "landscape");
+
+    if (camParams.get(CameraParameters::KEY_MAX_CONTRAST)) {
+        camParams.set("contrast-max",
+            camParams.get(CameraParameters::KEY_MAX_CONTRAST));
+    } else {
+        camParams.set("contrast-max",
+            -1);
+    }
+
+    if (camParams.get(CameraParameters::KEY_MAX_SATURATION)) {
+        camParams.set("saturation-max",
+            camParams.get(CameraParameters::KEY_MAX_SATURATION));
+    } else {
+        camParams.set("saturation-max",
+            -1);
+    }
+
+    if (camParams.get(CameraParameters::KEY_MAX_SHARPNESS)) {
+        camParams.set("sharpness-max",
+            camParams.get(CameraParameters::KEY_MAX_SHARPNESS));
+    } else {
+        camParams.set("sharpness-max",
+            -1);
+    }
 }
 
 int camera_set_preview_window(struct camera_device * device, struct preview_stream_ops *window) {

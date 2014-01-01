@@ -1,0 +1,3 @@
+# Access devices.
+allow system kgsl_device:dir search;
+allow system kgsl_device:chr_file rw_file_perms;

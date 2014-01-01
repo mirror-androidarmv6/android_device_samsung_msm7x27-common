@@ -15,7 +15,6 @@
 /sd-ext/app-private/vmdl.*\.tmp	u:object_r:apk_private_tmp_file:s0
 /sd-ext/tombstones(/.*)?	u:object_r:tombstone_data_file:s0
 /sd-ext/local/tmp(/.*)?	u:object_r:shell_data_file:s0
-/sd-ext/local/tmp/selinux(/.*)?   u:object_r:tombstone_data_file:s0
 # SD-EXT Misc data
 /sd-ext/misc/bluetoothd(/.*)?	u:object_r:bluetoothd_data_file:s0
 /sd-ext/misc/bluetooth(/.*)?	u:object_r:bluetooth_data_file:s0
@@ -32,6 +31,44 @@
 /sd-ext/data/com.android.settings/files/wallpaper	u:object_r:wallpaper_file:s0
 # SD-EXT Wallpaper file for other users
 /sd-ext/system/users/[0-9]+/wallpaper		u:object_r:wallpaper_file:s0
-# SD-EXT Downloaded files
-/sd-ext/data/com.android.providers.downloads/cache u:object_r:download_file:s0
+
+#############################
+# SD-EXT asec containers
+/sd-ext/app-asec(/.*)?    u:object_r:asec_image_file:s0
+
+# Audio
+/dev/msm_aac		u:object_r:audio_device:s0
+/dev/msm_amrnb		u:object_r:audio_device:s0
+/dev/msm_amrnb_in	u:object_r:audio_device:s0
+/dev/msm_amrwb		u:object_r:audio_device:s0
+/dev/msm_evrc		u:object_r:audio_device:s0
+/dev/msm_mp3		u:object_r:audio_device:s0
+/dev/msm_pcm_ctl	u:object_r:audio_device:s0
+/dev/msm_pcm_dec	u:object_r:audio_device:s0
+/dev/msm_pcm_in		u:object_r:audio_device:s0
+/dev/msm_pcm_out	u:object_r:audio_device:s0
+/dev/msm_preproc_ctl	u:object_r:audio_device:s0
+/dev/msm_qcelp		u:object_r:audio_device:s0
+/dev/msm_snd		u:object_r:audio_device:s0
+/dev/msm_voicememo	u:object_r:audio_device:s0
+/dev/msm_wma		u:object_r:audio_device:s0
+/dev/msm_wmapro		u:object_r:audio_device:s0
+/dev/pmem_adsp		u:object_r:audio_device:s0
+
+# Camera
+/dev/msm_camera(/.*)	u:object_r:camera_device:s0
+
+# Flex Sector Remapper (STL/BML)
+/dev/block/bml[0-9]*	u:object_r:mtd_device:s0
+/dev/block/stl[0-9]*	u:object_r:mtd_device:s0
+
+# Graphics
+/dev/genlock		u:object_r:kgsl_device:s0
+/dev/kgsl-3d0		u:object_r:kgsl_device:s0
+
+# PMEM
+/dev/pmem		u:object_r:ion_device:s0
+
+# Radio devices (rild)
+/dev/dpram*		u:object_r:radio_device:s0
 

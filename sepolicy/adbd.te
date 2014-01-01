@@ -1,0 +1,2 @@
+allow adbd kgsl_device:dir search;
+allow adbd kgsl_device:chr_file r_file_perms;

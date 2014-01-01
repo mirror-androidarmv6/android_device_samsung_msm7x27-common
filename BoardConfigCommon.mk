@@ -193,3 +193,16 @@ TARGET_RECOVERY_FSTAB := device/samsung/msm7x27-common/ramdisk/fstab.msm7x27
 
 ## OTA script extras file (build/tools/releasetools)
 TARGET_OTA_EXTRAS_FILE := device/samsung/msm7x27-common/releasetools-extras.txt
+
+## SELinux
+BOARD_SEPOLICY_DIRS := device/samsung/msm7x27-common/sepolicy
+
+BOARD_SEPOLICY_UNION := \
+    adbd.te \
+    app.te \
+    device.te \
+    file_contexts \
+    mediaserver.te \
+    surfaceflinger.te \
+    system.te
+

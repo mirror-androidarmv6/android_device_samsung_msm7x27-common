@@ -182,12 +182,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/msm7x27-common/recovery/init.recovery.msm7x27.rc:root/init.recovery.$(SAMSUNG_BOOTLOADER).rc
 
-# SELinux
-BOARD_SEPOLICY_DIRS += device/samsung/msm7x27-common/sepolicy
-
-BOARD_SEPOLICY_UNION += \
-    file_contexts
-
 ### BEGIN: Common properties
 
 ## Dalvik

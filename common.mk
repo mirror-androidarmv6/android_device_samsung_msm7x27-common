@@ -186,6 +186,7 @@ PRODUCT_COPY_FILES += \
 BOARD_SEPOLICY_DIRS += device/samsung/msm7x27-common/sepolicy
 
 BOARD_SEPOLICY_UNION += \
+    app.te \
     file_contexts
 
 ### BEGIN: Common properties

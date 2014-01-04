@@ -1,2 +1,4 @@
 Camera HAL for Samsung Galaxy Series
-To build camera HAL you need to put stock GB libcamera.so to this directory
+
+Based on CAF libcamera2 (froyo_almond branch)
+https://www.codeaurora.org/cgit/quic/la/platform/vendor/qcom/android-open/?h=froyo_almond

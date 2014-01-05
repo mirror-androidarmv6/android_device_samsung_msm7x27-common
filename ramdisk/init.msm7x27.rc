@@ -21,11 +21,8 @@ on init
 
 on fs
 
-    mount ext4 /dev/block/stl12 /system wait rw
-    mount ext4 /dev/block/stl12 /system wait ro remount
-    mount ext4 /dev/block/stl13 /data wait nosuid nodev
-    mount ext4 /dev/block/stl14 /cache wait nosuid nodev
-
+    symlink /fstab.gt-* /fstab.msm7x27
+    mount_all /fstab.msm7x27
     # Kernel Samepage Merging (KSM)
     write /sys/kernel/mm/ksm/sleep_millisecs 4000
     write /sys/kernel/mm/ksm/pages_to_scan 256

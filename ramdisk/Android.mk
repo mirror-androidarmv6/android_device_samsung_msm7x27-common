@@ -11,6 +11,13 @@ LOCAL_SRC_FILES		:= fstab.msm7x27
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
+ifneq (,$(filter galaxy5,$(CM_BUILD)))
+$(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/$(LOCAL_SRC_FILES)
+	@echo "Adjust zRAM size for fstab.$(SAMSUNG_BOOTLOADER): $< -> $@"
+	@mkdir -p $(dir $@)
+	$(hide) sed -e 's/50331648/25165824/g' $< >$@
+endif
+
 #######################################
 # init.gt-xxxxx.rc
 

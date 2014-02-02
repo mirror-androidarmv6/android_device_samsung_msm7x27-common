@@ -230,9 +230,11 @@ void CameraHAL_FixupParams(android::CameraParameters &camParams) {
 
     camParams.set(CameraParameters::KEY_SUPPORTED_PREVIEW_FRAME_RATES, preview_frame_rates);
 
+#if 0
     if (!camParams.get(CameraParameters::KEY_SUPPORTED_VIDEO_SIZES)) {
          camParams.set(CameraParameters::KEY_SUPPORTED_VIDEO_SIZES, video_sizes);
     }
+#endif
 
     if (!camParams.get(CameraParameters::KEY_MAX_NUM_FOCUS_AREAS)) {
         camParams.set(CameraParameters::KEY_MAX_NUM_FOCUS_AREAS, 1);
@@ -383,9 +385,11 @@ int camera_preview_enabled(struct camera_device * device) {
     return qCamera->previewEnabled();
 }
 
+#if 0
 int camera_store_meta_data_in_buffers(struct camera_device * device, int enable) {
     return 0;
 }
+#endif
 
 int camera_start_recording(struct camera_device * device) {
     return qCamera->startRecording();
@@ -529,7 +533,11 @@ int camera_device_open(const hw_module_t* module, const char* name, hw_device_t*
         camera_ops->start_preview              = camera_start_preview;
         camera_ops->stop_preview               = camera_stop_preview;
         camera_ops->preview_enabled            = camera_preview_enabled;
+#if 0
         camera_ops->store_meta_data_in_buffers = camera_store_meta_data_in_buffers;
+#else
+        camera_ops->store_meta_data_in_buffers = NULL;
+#endif
         camera_ops->start_recording            = camera_start_recording;
         camera_ops->stop_recording             = camera_stop_recording;
         camera_ops->recording_enabled          = camera_recording_enabled;
